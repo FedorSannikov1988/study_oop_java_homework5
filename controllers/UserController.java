@@ -50,7 +50,6 @@ public class UserController {
 
     public void updateUser(String userId, User newUser) throws Exception {
 
-        validator.validateUserId(userId);
         validator.validateUser(newUser);
 
         List<User> users = repository.getAllUsers();
