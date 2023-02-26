@@ -24,26 +24,16 @@ public class UserController {
 
     public User readUser(String userId) throws Exception {
 
+        validator.validateUserId(userId);
+
         List<User> users = repository.getAllUsers();
         User user = userSearch(userId, users);
         return user;
     }
 
-    private static User userSearch(String userId, List<User> users) throws Exception {
+    private User userSearch(String userId, List<User> users) throws Exception {
 
-        int namber = 0;
-
-        try {
-            namber = Integer.parseInt(userId);
-        }
-
-        catch(Exception ex) {
-            throw new Exception("You did not enter a number in integer format");
-        }
-
-        if (namber <= 0) {
-            throw new Exception("Number cannot be less than or equal to zero");
-        }
+        validator.validateUserId(userId);
 
         for (User user : users) {
             if (user.getId().equals(userId)) {
@@ -60,7 +50,9 @@ public class UserController {
 
     public void updateUser(String userId, User newUser) throws Exception {
 
+        validator.validateUserId(userId);
         validator.validateUser(newUser);
+
         List<User> users = repository.getAllUsers();
 
         User user = userSearch(userId,users);
@@ -72,6 +64,8 @@ public class UserController {
     }
 
     public void deleteUser(String deleteUserId) throws Exception {
+
+        validator.validateUserId(deleteUserId);
 
         List<User> users = repository.getAllUsers();
         User user = userSearch(deleteUserId, users);
