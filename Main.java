@@ -8,7 +8,7 @@ public class Main {
 
         FileOperation fileOperation = new FileOperationImpl("users", FormatSafeFile.csv);
 
-        Repository repository = new RepositoryFile(fileOperation);
+        Repository repository = new RepositoryFile(fileOperation, new UserMapper());
 
         UserController controller = new UserController(repository, new Validation());
 

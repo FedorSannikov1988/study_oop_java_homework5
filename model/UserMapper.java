@@ -1,14 +1,26 @@
 package model;
 
-interface UserMapper {
+public class UserMapper {
 
-    //работа с TXT
-    public String mapForTXT(User user);
+    public UserMapper() {
+    }
 
-    public User mapForTXT(String line);
-    
-    //работа с CSV
-    public String mapForCSV(User user);
+    public String mapForTXT(User user) {
+        return String.format("%s,%s,%s,%s", user.getId(), user.getFirstName(), user.getLastName(), user.getPhone());
+    }
 
-    public User mapForCSV(String line);
+    public User mapForTXT(String line) {
+        String[] lines = line.split(",");
+        return new User(lines[0], lines[1], lines[2], lines[3]);
+    }
+
+    public String mapForCSV(User user) {
+        return String.format("%s;%s;%s;%s" + "\n", user.getId(), user.getFirstName(), user.getLastName(), user.getPhone());
+    }
+
+    public User mapForCSV(String line) {
+        String[] lines = line.split(";");
+        return new User(lines[0], lines[1], lines[2], lines[3]);
+    }
+
 }

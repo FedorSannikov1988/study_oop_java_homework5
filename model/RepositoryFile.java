@@ -3,12 +3,15 @@ package model;
 import java.util.List;
 import java.util.ArrayList;
 
-public class RepositoryFile implements Repository, UserMapper {
+public class RepositoryFile implements Repository {
 
     private FileOperation fileOperation;
 
-    public RepositoryFile(FileOperation fileOperation) {
+    private UserMapper userMapper;
+
+    public RepositoryFile(FileOperation fileOperation, UserMapper userMapper) {
         this.fileOperation = fileOperation;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -20,7 +23,7 @@ public class RepositoryFile implements Repository, UserMapper {
 
         List<User> users = new ArrayList<>();
         for (String line : withoutEmptyLines) {
-            users.add( mapForCSV(line) );
+            users.add( userMapper.mapForCSV(line) );
         }
         return users;
     }
@@ -64,30 +67,9 @@ public class RepositoryFile implements Repository, UserMapper {
         List<String> lines = new ArrayList<>();
 
             for (User item: users) {
-                lines.add( mapForCSV(item) );
+                lines.add( userMapper.mapForCSV(item) );
             }
             fileOperation.saveAllLines(lines);
     }
 
-    @Override
-    public String mapForTXT(User user) {
-        return String.format("%s,%s,%s,%s", user.getId(), user.getFirstName(), user.getLastName(), user.getPhone());
-    }
-
-    @Override
-    public User mapForTXT(String line) {
-        String[] lines = line.split(",");
-        return new User(lines[0], lines[1], lines[2], lines[3]);
-    }
-
-    @Override
-    public String mapForCSV(User user) {
-        return String.format("%s;%s;%s;%s" + "\n", user.getId(), user.getFirstName(), user.getLastName(), user.getPhone());
-    }
-
-    @Override
-    public User mapForCSV(String line) {
-        String[] lines = line.split(";");
-        return new User(lines[0], lines[1], lines[2], lines[3]);
-    }
 }
